@@ -44,24 +44,24 @@ This contract is basically a Uniswap price oracle. Checks for price update after
  **FUNCTIONS:**
 
 
- 0. oracle_price() 
+ 0. oracle_price():
  This takes in an enum as a parameter to enable the admin select which token they want to query. The getLatestPrice function is called to retrieve the current price of ETH-USD, which is then used to determine the amount of Frax or FXS returned against ETH.
  
  
- 1. frax_price()
+ 1. frax_price():
  Calls oracle_price() and returns the price of Frax.
  
- 2. fxs_price()
+ 2. fxs_price():
  Calls oracle_price() and returns the price of Fxs.
  
- 3. frax_info()
+ 3. frax_info():
  Returns states of all variables holding details about either Frax or Fxs: 
  frax_price, fxs_price, totalSupply, global_Collateral_ratio, globalCollateralValue, minting_fee, redemption_fee, Eth_current_price.
  
- 4. globalCollateralValue()
+ 4. globalCollateralValue():
   Loops through the entire pools and returns all value of collaterals in all the pools. It using a for loop and adds up all the collaterals in each of the pools as it loops through.
   
- 5. refreshCollateralRatio()
+ 5. refreshCollateralRatio():
  First checks that the collateral_ratio_paused variable is set to false, reverts otherwise. It also checks that the cooldown time has elapsed before it proceeds.
  
  This function balances the collateral ratio of Frax based on its relation to price_target and price_band. If the current price of the coin is greater than the price target and the set bandwidth, and if the collateral ratio is less than or equals frax_step (the amount to change in the collaterization ratio), then the collateral ratio is reduced to zero; on the contrary, if the collateral ratio is greater than the frax_step, then the frax_step is substracted from the collateral ratio.
@@ -74,56 +74,56 @@ This contract is basically a Uniswap price oracle. Checks for price update after
  
  Finally the time of the update is recorded and event emitted.
  
- 6. pool_burn_from()
+ 6. pool_burn_from():
  
  Takes an address and an amount of the stablecoin to be burnt, removes the amount of the coin from circulation and substracts the amount form totalSupply. Calls an external function _burnFrom() on ERC20Custom.sol
  
- 7. pool_mint()
+ 7. pool_mint():
  Serves as the minter for the Frax protocol, uses the _mint function from ERC20Custom.sol
  
- 8. addPool()
+ 8. addPool():
  Adds assets to the protocol staking pool.
  
- 9. removePool()
+ 9. removePool():
  Removes assets from the staking pool; loops through the pool array and sets the target asset's address to address zero.
  
- 10. setRedemptionFee()
+ 10. setRedemptionFee():
  Sets fee that users pay to redeem stakes on the platform.
  
- 11. setMintingFee()
+ 11. setMintingFee():
  Sets the amount of fee users pay to mint Frax on the platform. Users can mint Frax if they have FXS and one other token specified on the platform.
  
- 12. setFraxStep()
+ 12. setFraxStep():
 Sets the frax_step... which is the range to change the collaterization ratio when the refreshCollateralRation() is called. 
  
- 13. setPriceTarget()
+ 13. setPriceTarget():
  Sets the target at which refreshCollateralRatio() will be triggered. Keeps the Frax price within the stable range, relatively.
  
- 14. setRefreshCooldown()
+ 14. setRefreshCooldown():
  Sets the period for which the refreshCollateralRatio() must wait before it can be called again.
  
- 15. setFXSAddress()
+ 15. setFXSAddress():
  Sets the FXS coin address.
  
- 16. setETHUSDOracle()
+ 16. setETHUSDOracle():
  Sets the address of the Chainlink Eth-USD Aggregator.
  
- 17. setTimeLock()
+ 17. setTimeLock():
  Sets the timelock governance address. This address has an admin role in the protocol.
  
- 18. setController()
+ 18. setController():
  Sets the address of the Controller. This address has the role of setting and updating some parameters in the protocol.
  
- 19. setPriceBand()
+ 19. setPriceBand():
  Sets the price range within which the collateral ration is bound. The ratio cannot exceed this band.
  
- 20. setFRAXEthOracle()
+ 20. setFRAXEthOracle():
  Sets the addresses for updating the price of Frax against ETH. This used UniswapPairOracle to get the latest price, and then converts based on the decimals of the Frax coin and ETH.
  
- 21. setFXSethOracle()
+ 21. setFXSethOracle():
  Same as setFRAXEthOracle(), but for updating the FXS coin.
  
- 22. toggleCollateralRatio()
+ 22. toggleCollateralRatio():
  Used to pause or play collateral ratio. If set to true, then the refreshCollateralRatio() cannot be called. 
  
 
